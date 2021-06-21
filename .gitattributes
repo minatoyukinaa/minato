@@ -1,2 +1,40 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+img = cv2.imread('minato_yukina.jpg',1)
+imf = img.shape
+H = imf[0]
+W = imf[1]
+cnt_b=np.zeros(256,float)
+cnt_g=np.zeros(256,float)
+cnt_r=np.zeros(256,float)
+for i in range(0,H):
+    for j in range(0,W):
+        (b,g,r)= img[i,j]
+        idx_b = int(b)
+        idx_g = int(g)
+        idx_r = int(r)
+        cnt_b[idx_b]+=1
+        cnt_g[idx_g]+=1
+        cnt_r[idx_r]+=1
+
+tot = H*W
+for i in range (0,256):
+    cnt_b[i]= cnt_b[i]/tot
+    cnt_g[i]=cnt_g[i]/tot
+    cnt_r[i]=cnt_r[i]/tot
+
+
+x = np.linspace(0,255,256)
+y = cnt_b
+plt.figure()
+plt.bar(x,y,0.8,color='b')
+y=cnt_g
+plt.figure()
+plt.bar(x,y,0.8,color='g')
+plt.figure()
+y=cnt_r
+plt.bar(x,y,0.8,color='r')
+
+plt.show()
+plt.waitKey(0)
